@@ -1,14 +1,15 @@
 # download pdftotxt from 
-# ftp://ftp.foolabs.com/pub/xpdf/xpdfbin-win-3.03.zip
+# ftp://ftp.foolabs.com/pub/xpdf/xpdfbin-win-3.04.zip
 # and extract to your program files folder
 
 # here is a pdf for mining
-url <- "http://www.noisyroom.net/blog/RomneySpeech072912.pdf"
-dest <- tempfile(fileext = ".pdf")
-download.file(url, dest, mode = "wb")
+#url <- "http://www.noisyroom.net/blog/RomneySpeech072912.pdf"
+#dest <- tempfile(fileext = ".pdf")
+dest <- "C:\\Users\\axp13\\Desktop\\SERs\\SNPB\\SNPB_SERs_2012-2013.pdf"
+#download.file(url, dest, mode = "wb")
 
 # set path to pdftotxt.exe and convert pdf to text
-exe <- "C:\\Program Files\\xpdfbin-win-3.03\\bin32\\pdftotext.exe"
+exe <- "C:\\Users\\axp13\\Downloads\\xpdfbin-win-3.04\\bin64\\pdftotext.exe"
 system(paste("\"", exe, "\" \"", dest, "\"", sep = ""), wait = F)
 
 # get txt-file name and open it  
@@ -20,6 +21,7 @@ shell.exec(filetxt); shell.exec(filetxt)    # strangely the first try always thr
 library(tm)
 library(wordcloud)
 library(Rstem)
+library(RColorBrewer)
 
 txt <- readLines(filetxt) # don't mind warning..
 
@@ -52,7 +54,9 @@ d <- cbind(freq = agg_freq[, 2], agg_word)
 d <- d[order(d$freq, decreasing = T), ]
 
 # print wordcloud:
-wordcloud(d$word, d$freq)
+pal2 <- brewer.pal(8,"Dark2")
+#wordcloud(d$word, d$freq, scale=c(8,.2), random.order=FALSE, rot.per=.15, colors=pal2)
+wordcloud(d$word, d$freq, random.order=FALSE, rot.per=.15, colors=pal2)
 
 # remove files
 file.remove(dir(tempdir(), full.name=T)) # remove files
